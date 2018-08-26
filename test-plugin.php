@@ -47,7 +47,7 @@
 					//query3 apla kai mono gia na elegxw an trexei
 					//$query3 = $mysqli3->query("INSERT INTO interest_array (user_id, tags_id, count_tags) VALUES (1, 300, '$the_tags_of_new_post')");
 				}
-				$mysqli3->close();
+				//$mysqli3->close();
 				
 				//Kathgoriopoihsh endiaferontos vasei tags, ana xrhsth
 				while($row = $ids->fetch_assoc()) {
@@ -55,15 +55,24 @@
 					$sql_order_top = "SELECT tags_id FROM interest_array WHERE user_id='$r_id' ORDER BY count_tags DESC LIMIT 3";
 					$sql_order_middle = "SELECT tags_id FROM interest_array WHERE user_id='$r_id' ORDER BY count_tags DESC LIMIT 4,6";
 					$ordered_tags_per_user_top = $mysqli->query($sql_order_top);
-					$top_priorities = mysqli_fetch_all($ordered_tags_per_user_top,MYSQLI_ASSOC);
+					$top_priorities_arrays = mysqli_fetch_all($ordered_tags_per_user_top,MYSQLI_ASSOC);	
+					$top_priorities = array_column($top_priorities_arrays,'tags_id');
 					$ordered_tags_per_user_middle = $mysqli->query($sql_order_middle);
-					$middle_priorities = mysqli_fetch_all($ordered_tags_per_user_middle,MYSQLI_ASSOC);
-					print_r($middle_priorities);
+					$middle_priorities_arrays = mysqli_fetch_all($ordered_tags_per_user_middle,MYSQLI_ASSOC);
+					$middle_priorities = array_column($middle_priorities_arrays,'tags_id');
 					$result = array_intersect($top_priorities, $tags_ids);
-					if($result){
-						$mysqli4 = new mysqli( "localhost", "root", "", "wp" );
-						$query4 = $mysqli4->query("INSERT INTO interest_array (user_id, tags_id, count_tags) VALUES (444, 444, 444");
-						$mysqli4->close();
+					$query7 = $mysqli->query("INSERT INTO interest_array (user_id, tags_id, count_tags) VALUES (1, 2, 3");
+
+					if(empty($result)){
+						
+						//$query4 = $mysqli->query("INSERT INTO interest_array (user_id, tags_id, count_tags) VALUES (444, 444, 444");
+					}
+					else {
+						print_r('ok');
+						$mysqli8 = new mysqli( "localhost", "root", "", "wp" );
+						$sql_test = "INSERT INTO interest_array (user_id, tags_id, count_tags) VALUES (555, 444,444)";
+						$query5 = $mysqli8->query($sql_test);
+						$mysqli8->close();
 					}
 					//debug_to_console($middle_priorities);
 					}
