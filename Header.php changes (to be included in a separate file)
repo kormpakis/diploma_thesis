@@ -1,0 +1,47 @@
+<?php
+//Changes - Phase 1: Travame ta tags twn arthrwn poy diavazei o kathe xrhsths kai ta apothikeyoyme sto database	
+$mysqli = new mysqli("localhost", "root", "", "wp");
+	
+function debug_to_console( $data ) {
+    $output = $data;
+    if ( is_array( $output ) )
+        $output = implode( ',', $output);
+
+    echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
+}
+
+$user_id = intval(get_current_user_id());
+debug_to_console("The user is ".$user_id);
+$url_test = get_permalink();
+debug_to_console("The url is ".$url_test);
+
+//Tsekaroyme ton pinaka gi ayton ton xrhsth kai ayto to tag
+
+if ( $url_test == 'http://localhost/wordpress/' OR $user_id == 0 ){
+	//do nothing
+	//debug_to_console("eimai to url ".$url_test);
+	}
+
+else {		
+		$tag_objects = get_the_tags($post->ID);
+		$tags_id = array_map(create_function('$o', 'return $o->term_id;'), $tag_objects);	
+		//print_r( $tags_id );
+
+		foreach ($tags_id as &$value) {
+			$tag = intval($value);
+			$check_interest = $mysqli->query("SELECT * FROM interest_array WHERE user_id = '$user_id' AND tags_id = '$tag'");
+		
+			if (is_null($check_interest->fetch_assoc())) {
+				$sql = "INSERT INTO interest_array (user_id, tags_id, count_tags) VALUES ('$user_id', '$tag', 1)";
+				$mysqli->query($sql);
+			} 
+			else {
+				$sql_update = "UPDATE interest_array SET count_tags=count_tags+1 WHERE user_id = '$user_id' AND tags_id = '$tag'";
+				$mysqli->query($sql_update);
+			}
+		}
+
+		$mysqli->close();
+	}
+	
+?>
