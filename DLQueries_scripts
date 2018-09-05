@@ -1,0 +1,13 @@
+//Various DL queries - testing the ontology
+
+Musical_manifestation and is_composed_by value Metallica
+
+Band_member and member_of value Metallica
+
+Record and is_of_genre value heavy_metal
+
+Genre and genre_liked_by value Korbakis
+
+User and likes_genre value heavy_metal
+
+Record and is_of_genre some (Genre and genre_liked_by value Korbakis)
