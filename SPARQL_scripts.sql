@@ -20,3 +20,14 @@ SELECT ?x ?y WHERE { ?x rdf:type :User.
 					?x :Birth_date ?y }
 
 SELECT ?x WHERE { :Korbakis :Birth_date ?x. }
+
+SELECT ?x ?y WHERE { ?x rdf:type :Record.
+					?x :is_of_genre ?y. }
+					
+SELECT ?x ?y ?z WHERE { ?x rdf:type :Record.
+						?x :is_of_genre ?y.
+						?y :genre_liked_by ?z. }
+						
+SELECT ?x ?y WHERE { ?x rdf:type :Record.
+						?x :is_of_genre ?y.
+						?y :genre_liked_by :Korbakis. }
