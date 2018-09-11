@@ -14,7 +14,7 @@
 			}
 		}
 	
-// Oi dyo aytes synarthseis trexoyn mono otan ena post dhmosieyetai gia prwth fora
+		// Oi dyo aytes synarthseis trexoyn mono otan ena post dhmosieyetai gia prwth fora
 		add_action('transition_post_status', 'run_when_post_published', 10, 3);
 		//add_action('transition_post_status', 'GetLastPostId', 10, 3);
 
@@ -55,24 +55,23 @@
 					$middle_priorities_arrays = mysqli_fetch_all($ordered_tags_per_user_middle,MYSQLI_ASSOC);
 					$middle_priorities = array_column($middle_priorities_arrays,'tags_id');
 					
-					$result = array_intersect($top_priorities, $tags_ids);					
+					$result = array_intersect($top_priorities, $tags_ids);
 					if(empty($result)) {
-						$result2 = array_intersect($middle_priorities, $tags_ids);
+						$result2 = array_intersect($middle_priorities, $tags_of_new_post);
 						if(empty($result2)) {
-							//Kamia eidopoihsh
+							return 3; //TIPOTA
 						}
 						else { //if(!empty($result2)) 
-							//Eidopoihsh gia priority 2
+							$mysqli20 = new mysqli( "localhost", "root", "", "wp" );
+							$query20 = $mysqli20->query("INSERT INTO article_selection (user_id, post_id, priority) VALUES ('$r_id', '$thePostID', 2)");
+							$mysqli20->close(); //EINAI STA MIDDLE
 						}
 					}
 					else {//if(!empty($result1)){
-						//Eidopoihsh gia priority 1
-						//Testing code underneath
-						print_r('ok');
-						$mysqli8 = new mysqli( "localhost", "root", "", "wp" );
-						$sql_test = "INSERT INTO interest_array (user_id, tags_id, count_tags) VALUES (555, 444,444)";
-						$query5 = $mysqli8->query($sql_test);
-						$mysqli8->close();
+						// 1; //EINAI STA TOP
+						$mysqli30 = new mysqli( "localhost", "root", "", "wp" );
+						$query30 = $mysqli30->query("INSERT INTO article_selection (user_id, post_id, priority) VALUES ('$r_id', '$thePostID', 1)");
+						$mysqli30->close(); //EINAI STA TOP
 					}
 					}
 				$mysqli->close();	
