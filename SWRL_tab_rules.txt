@@ -1,0 +1,13 @@
+//Various rules for the ontology
+
+//A song contained in a record of some genre, is of the same genre
+is_contained_in_record(?X, ?Y) ^ is_of_genre(?Y, ?Z) -> is_of_genre(?X, ?Z)
+
+//(WORKED) A user likes an musical manifestations of the genre he likes
+likes_genre(?X, ?Y) ^ is_of_genre(?Z, ?Y) -> likes_musical_manifestation(?X, ?Z)
+
+//(WORKED) A user likes a genre and an album is of this genre and this album is composed by an artist, so this user likes this artist
+likes_genre(?X, ?Y) ^ is_of_genre(?Z, ?Y) ^ is_composed_by(?Z, ?N) -> likes_artist(?X, ?N)
+
+// (WORKED) A user is similar to another if they like one same genre and one same artist
+genre_liked_by(?X,?Y) ^ genre_liked_by(?X,?Z) ^ artist_liked_by(?A,?Y) ^ artist_liked_by(?A,?Z) -> user_similar_to(?Y,?Z)
